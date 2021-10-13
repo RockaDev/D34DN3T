@@ -8,3 +8,10 @@ pip install -r requirements.txt
 
 chmod +x main.py
 python3 main.py
+
+
+Creators of this script are not responsible for any damage whoever make.
+This script is not supposed to be used publicly by other people.
+This script was created to use privately for only creators.
+
+!!PLEASE DONT USE THIS SCRIPT ON ANY ILLEGAL ACTIVITY!!
