@@ -73,10 +73,10 @@ L = print(bcolors.BOLD + bcolors.OKGREEN + """
 
 
 def progressBar():
-    rnd = random.randint(14,47)
-    for i in range(rnd+1):
-        time.sleep(0.1)
-        sys.stdout.write(('*'*i)+(''*(rnd-i))+("\r [ %d"%i+"% ] "))
+    rnd = random.uniform(0.009,0.02)
+    for i in range(65+1):
+        time.sleep(rnd)
+        sys.stdout.write(('*'*i)+(''*(65-i))+("\r [ %d"%i+"% ] "))
         sys.stdout.flush()
 progressBar()
 
@@ -102,24 +102,24 @@ def showMainTemp():
 showMainTemp()
 
 
-MD4 = 900
-MD5 = 0
-SHA1 = 100
-SHA224 = 1300
-SHA256 = 1400
-SHA384 = 10800
-SHA512 = 1700
+global MD4
+global MD5
+global SHA1
+global SHA224
+global SHA256
+global SHA384
+global SHA512
 
 conf = yaml.safe_load(open('application.yml'))
 cfg = conf['user']['a']
 loadcfg = conf['user']['b']
 
 def sendMessage():
-    a = input(str(bcolors.ENDC + "Phone number (ex. +432xxxxxxxxx): "))
-    b = input(str("Message: "))
+    phoneNumber = input(str(bcolors.ENDC + "Phone number (ex. +432xxxxxxxxx): "))
+    phoneMessage = input(str("Message: "))
     resp = requests.post('https://textbelt.com/text', {
-    'phone': str(a),
-    'message': str(b),
+    'phone': str(phoneNumber),
+    'message': str(phoneMessage),
     'key': '5dbf294f3693ce0d9adb19bb911cac3e0737dd43Qc3MH8GhqUauZ4MjpbHv9JYCf',
     })
     print(resp.json())
@@ -192,29 +192,33 @@ def nmapscan():
 
 def accespoint():
     apinstall = input(str(bcolors.ENDC + "Is create_ap installed on your device? [Y/n] >> "))
-    if apinstall == "Y" or apinstall == "y":
-        apinterface = input(str("Enter interface [default: wlan0, wlan1] >> "))
-        apname = input(str("Enter name of the access point >> "))
-        subprocess.run(["create_ap", str(apinterface), str(apinterface), str(apname)])
-    elif apinstall == "n":
-       subprocess.run(["git","clone","https://github.com/oblique/create_ap"])
-       sleep(1)
-       subprocess.run(["make","install"], cwd="create_ap")
-    else:
-       print("Wrong answer.")
+    try:
+        if apinstall == "Y" or apinstall == "y":
+            apinterface = input(str("Enter interface [default: wlan0, wlan1] >> "))
+            apname = input(str("Enter name of the access point >> "))
+            subprocess.run(["create_ap", str(apinterface), str(apinterface), str(apname)])
+        elif apinstall == "n":
+            subprocess.run(["git","clone","https://github.com/oblique/create_ap"])
+            sleep(1)
+            subprocess.run(["make","install"], cwd="create_ap")
+        else:
+            print("Wrong answer, please try again.")
+    except e:
+        print(f"Error {e}")
 
 def commands():
     menuText = input(bcolors.BOLD + bcolors.WARNING + """
 <[1]> SSH LOGIN                 <[4]> FAST NMAP SCAN
 <[2]> LISTEN ON ANY PORT        <[5]> CRACK HASH
 <[3]> CREATE ACCESS POINT       <[6]> SEND ANONYMOUS MESSAGE
-<[99]> EXIT
+<[99]> EXIT                     <[7]> KILLN3T
 
 CHOOSE: """)
     if menuText == "1":
         askName = input(str(bcolors.ENDC + "NAME >> "))
         askTarget = input(str(bcolors.ENDC + "TARGET >> "))
-        subprocess.run(["ssh", str(askName+"@"+askTarget)])
+        a_a_a = "@"
+        subprocess.run([f"ssh", str(askName+f"{a_a_a}"+askTarget)])
         
     elif menuText == "99":
         print(bcolors.OKGREEN + """
@@ -236,6 +240,11 @@ Goodbye!""")
 
     elif menuText == "6":
         sendMessage()
+
+    elif menuText == "7":
+        subprocess.run(["clear"])
+        subprocess.call(["sudo","python3","killnet.py"], cwd="KillN3T")
+        
         
     else:
         print(bcolors.FAIL + """
