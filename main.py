@@ -206,11 +206,16 @@ def accespoint():
     except e:
         print(f"Error {e}")
 
+def portScanner():
+    ask_for_ip_address = input(str(bcolors.ENDC + "\nTARGET IP >> "))
+    ask_for_port_range = input(str("PORT RANGE [X-XXXXX] >> "))
+    subprocess.run([f"python3","portscan.py",ask_for_ip_address,"--ports",ask_for_port_range],cwd="scanners")
+
 def commands():
     menuText = input(bcolors.BOLD + bcolors.WARNING + """
-<[1]> SSH LOGIN                 <[4]> FAST NMAP SCAN
-<[2]> LISTEN ON ANY PORT        <[5]> CRACK HASH
-<[3]> CREATE ACCESS POINT       <[6]> SEND ANONYMOUS MESSAGE
+<[1]> SSH LOGIN                 <[4]> FAST NMAP SCAN             <[8]> FAST NETWORK SCAN
+<[2]> LISTEN ON ANY PORT        <[5]> CRACK HASH                 <[9]> FAST PORT SCAN
+<[3]> CREATE ACCESS POINT       <[6]> SEND ANONYMOUS MESSAGE     <[10]> UPCOMING..
 <[99]> EXIT                     <[7]> KILLN3T
 
 CHOOSE: """)
@@ -245,6 +250,12 @@ Goodbye!""")
         subprocess.run(["clear"])
         subprocess.call(["sudo","python3","killnet.py"], cwd="KillN3T")
         
+    elif menuText == "8":
+        print(bcolors.ENDC + "")
+        subprocess.run(["python3","scan.py"],cwd="scanners")
+
+    elif menuText == "9":
+        portScanner()
         
     else:
         print(bcolors.FAIL + """
